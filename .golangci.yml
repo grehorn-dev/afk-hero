@@ -1,0 +1,81 @@
+# golangci-lint configuration for AFK-Hero.
+#
+# Goals:
+#   - Keep the default `govet` coverage and layer on fast, opinionated
+#     checks that catch common Go slip-ups.
+#   - Avoid style-only linters that do not pay their way (gci, funlen,
+#     godot, wsl, etc.).
+#   - Stay tolerant of test files and platform-specific code paths that
+#     have to touch unsafe/syscall APIs.
+#
+# Tested with golangci-lint v2.11.x.
+version: "2"
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+  tests: true
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gocritic
+    - gocyclo
+    - misspell
+    - unconvert
+    - unparam
+    - bodyclose
+    - copyloopvar
+    - durationcheck
+    - errorlint
+    - nilerr
+    - nolintlint
+    - prealloc
+    - revive
+    - usestdlibvars
+
+  settings:
+    gocyclo:
+      # runAnimation is unavoidably long because it drives the entire
+      # animation pipeline. Everything else should stay well under this.
+      min-complexity: 30
+
+    revive:
+      rules:
+        - name: var-naming
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+
+    gocritic:
+      disabled-checks:
+        - ifElseChain
+
+  exclusions:
+    rules:
+      # Tests are allowed to ignore error returns from test doubles and
+      # helpers; test complexity limits would punish table-driven designs.
+      - path: _test\.go
+        linters:
+          - errcheck
+          - gocyclo
+          - unparam
+          - revive
+          - gocritic
+      # Windows syscall wrappers are forced to use unsafe and to ignore
+      # "callErr" from the Call signature when we fall back to r1 checks.
+      - path: internal/platform/windows/
+        linters:
+          - gocritic
+          - unparam
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

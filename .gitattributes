@@ -1,0 +1,32 @@
+# Handle line endings automatically for files detected as text
+# and leave all files detected as binary untouched.
+* text=auto eol=lf
+
+# Git Text Files
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+# License Files
+LICENSE text eol=lf
+NOTICE text eol=lf
+
+# Common Text Files
+*.txt text eol=lf
+*.md text eol=lf
+*.html eol=lf
+
+# Config Files
+*.yml eol=lf
+*.yaml eol=lf
+*.mod eol=lf
+*.sum eol=lf
+*.proto eol=lf
+**/Dockerfile eol=lf
+
+# Source Files
+*.go eol=lf
+
+# Binary Files
+*.exe binary
+*.lib binary
+*.zip binary

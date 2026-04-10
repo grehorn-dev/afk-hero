@@ -1,0 +1,76 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #14181d;
+  --fg: #f1f4f8;
+  --border: #38424f;
+  --border-focus: #6fb3ff;
+  --primary: #6fb3ff;
+  --primary-hover: #519ee9;
+  --danger: #ff7a7a;
+  --danger-hover: #ff5b5b;
+  --disabled: #26303b;
+  --disabled-text: #9ca8b6;
+  --error: #ff7a7a;
+  --success: #54d089;
+  --progress-bg: #202833;
+  --progress-fill: #6fb3ff;
+  --toggle-active: #6fb3ff;
+  --toggle-inactive: #26303b;
+  --section-bg: #1b222b;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --border: #d0d0d0;
+  --border-focus: #4a90d9;
+  --primary: #4a90d9;
+  --primary-hover: #357abd;
+  --danger: #d9534f;
+  --danger-hover: #c9302c;
+  --disabled: #e9ecef;
+  --disabled-text: #6c757d;
+  --error: #dc3545;
+  --success: #28a745;
+  --progress-bg: #e9ecef;
+  --progress-fill: #4a90d9;
+  --toggle-active: #4a90d9;
+  --toggle-inactive: #e9ecef;
+  --section-bg: #f8f9fa;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* RTL support */
+[dir="rtl"] .form-row {
+  direction: rtl;
+}
+
+[dir="rtl"] .range-controls {
+  direction: rtl;
+}
+
+[dir="rtl"] .button-bar {
+  direction: rtl;
+}

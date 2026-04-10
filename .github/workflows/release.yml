@@ -1,0 +1,127 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Gate: run the full CI verification suite first ──────────────
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  # ── Build, package, and publish the release ─────────────────────
+  release:
+    needs: verify
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.12.0
+
+      - name: Install GCC toolchain
+        shell: pwsh
+        run: |
+          winget install -e --id BrechtSanders.WinLibs.POSIX.UCRT `
+            --accept-source-agreements --accept-package-agreements
+
+      - name: Build
+        shell: pwsh
+        run: wails build
+
+      # ────────────────────────────────────────────────────────────
+      # CODE SIGNING (placeholder — uncomment when a certificate
+      # is available)
+      #
+      # Option A: SignPath Foundation (free for OSS)
+      # ───────────────────────────────────────────
+      # Apply at https://signpath.org/open-source
+      #
+      # Prerequisites:
+      #   1. Register the project on SignPath.
+      #   2. Add repo secret: SIGNPATH_API_TOKEN
+      #   3. Note OrganizationId, ProjectSlug, SigningPolicySlug.
+      #
+      # - name: Sign executable (SignPath)
+      #   uses: signpath/github-action-submit-signing-request@v1
+      #   with:
+      #     api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #     organization-id: "<your-organization-id>"
+      #     project-slug: "afk-hero"
+      #     signing-policy-slug: "release-signing"
+      #     artifact-configuration-slug: "exe"
+      #     input-artifact-path: build/bin/afk-hero.exe
+      #     output-artifact-path: build/bin/afk-hero.exe
+      #     wait-for-completion: true
+      #     wait-for-completion-timeout-in-seconds: 300
+      #
+      # Option B: Azure Trusted Signing
+      # ────────────────────────────────
+      # Cloud-managed EV certificates without hardware tokens.
+      #
+      # Prerequisites:
+      #   1. Create Azure Trusted Signing account + certificate
+      #      profile in the Azure portal.
+      #   2. Register an Entra ID app with the
+      #      "Trusted Signing Certificate Profile Signer" role.
+      #   3. Add repo secrets:
+      #      AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID,
+      #      AZURE_SIGNING_ENDPOINT, AZURE_SIGNING_ACCOUNT,
+      #      AZURE_CERTIFICATE_PROFILE
+      #
+      # - name: Sign executable (Azure Trusted Signing)
+      #   uses: azure/trusted-signing-action@v0.5.0
+      #   with:
+      #     azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      #     endpoint: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+      #     trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+      #     certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE }}
+      #     files-folder: build/bin
+      #     files-folder-filter: exe
+      #     file-digest: SHA256
+      #     timestamp-rfc3161: http://timestamp.acs.microsoft.com
+      #     timestamp-digest: SHA256
+      # ────────────────────────────────────────────────────────────
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Package release ZIP
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.version.outputs.tag }}"
+          $zipName = "afk-hero-${tag}-windows-amd64.zip"
+          Compress-Archive -Path build/bin/afk-hero.exe -DestinationPath $zipName
+          echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: AFK-Hero ${{ steps.version.outputs.tag }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.tag, '-') }}
+          generate_release_notes: true
+          files: ${{ env.ZIP_NAME }}
