@@ -322,21 +322,21 @@ func DefaultSettings() Settings {
 		Direction: DirectionRandom,
 
 		Distance: NumericRange{
-			Mode: RangeModeRandom, Value: 100, MinVal: 100, MaxVal: 200,
+			Mode: RangeModeRandom, Value: 150, MinVal: 150, MaxVal: 300,
 		},
 		Interval: NumericRange{
-			Mode: RangeModeRandom, Value: 50, MinVal: 50, MaxVal: 60,
+			Mode: RangeModeRandom, Value: 25, MinVal: 25, MaxVal: 35,
 		},
 		Speed: NumericRange{
 			Mode: RangeModeRandom, Value: 1, MinVal: 1, MaxVal: 2,
 		},
 		Inactivity: NumericRange{
-			Mode: RangeModeFixed, Value: 239, MinVal: 60, MaxVal: 120,
+			Mode: RangeModeFixed, Value: 60, MinVal: 60, MaxVal: 120,
 		},
 
 		ActivationEnabled:              false,
 		ActivationMode:                 ActivationModeAuto,
-		ActivationTimeout:              840,
+		ActivationTimeout:              239,
 		TargetWindowTitle:              "",
 		TargetWindowClass:              "",
 		TargetProcessName:              "",
