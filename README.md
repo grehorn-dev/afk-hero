@@ -5,19 +5,20 @@
 
 ![AFK-Hero Settings](.github/screenshot.png)
 
-Windows desktop app that simulates mouse movement when user inactivity is detected. Sits in the system tray, keeps your session alive and optionally brings a target window to the foreground.
+Windows desktop app that simulates mouse movement when user inactivity is detected. Sits in the system tray, 
+keeps your session alive and optionally brings a target/game window to the foreground.
 
 ## Features
 
-- Automatic mouse movement using closed geometric paths (triangle, rectangle, pentagon, line segment, 1 px nudge) with configurable direction, distance and speed
-- Movement injection via relative 1 px `SendInput` steps - no absolute jumps, no driver hooks
-- Inactivity detection through `GetLastInputInfo` polling
+- Automatic mouse movement using closed geometric paths with configurable direction, distance and speed
+- Movement injection via relative steps - no absolute jumps, no driver hooks
+- User inactivity detection
 - Fixed and Random modes for every numeric parameter
-- Window Activation - auto-detect fullscreen/borderless apps or pick a window manually; activate it after a configurable timeout
-- 57 languages with RTL support
-- Dark / Light theme
+- Window Activation - auto-detect fullscreen/borderless games/apps or pick a window manually; activate it after a configurable timeout
+- Translation into dozens of languages, including right-to-left support
+- Dark / Light themes support
 - System tray icon with localized context menu
-- TOML config persisted in `%APPDATA%/afk-hero/`
+- Config persisted in `%APPDATA%/afk-hero/`
 - Single-instance enforcement
 
 ## System Requirements
