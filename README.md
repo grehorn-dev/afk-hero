@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/grehorn-dev/afk-hero/actions/workflows/ci.yml/badge.svg)](https://github.com/grehorn-dev/afk-hero/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ![AFK-Hero Settings](.github/screenshot.png)
 
 Windows desktop app that simulates mouse movement when user inactivity is detected. Sits in the system tray, keeps your session alive and optionally brings a target window to the foreground.
