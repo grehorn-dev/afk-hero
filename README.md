@@ -5,6 +5,8 @@
 
 ![AFK-Hero Settings](.github/screenshot.png)
 
+![AFK-Hero Settings](.github/pictures/systrayicon.png)
+
 Windows desktop app that simulates mouse movement when user inactivity is detected. Sits in the system tray, 
 keeps your session alive and optionally brings a target/game window to the foreground.
 
