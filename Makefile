@@ -32,7 +32,8 @@ help:
 	@echo "  make frontend-lint    - npm run lint"
 	@echo "  make clean            - remove build/bin and frontend/dist"
 
-verify: fmt vet test test-race lint frontend-install frontend-typecheck frontend-test frontend-lint build-wails
+# Frontend must be built before Go targets because assets.go embeds frontend/dist.
+verify: frontend-install frontend-build frontend-typecheck frontend-test frontend-lint fmt vet test test-race lint build-wails
 
 fmt:
 	gofmt -w .
@@ -60,6 +61,9 @@ tidy:
 
 frontend-install:
 	cd frontend && npm ci
+
+frontend-build:
+	cd frontend && npm run build
 
 frontend-typecheck:
 	cd frontend && npx tsc --noEmit

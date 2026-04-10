@@ -64,6 +64,30 @@ Add-WinGetCommandToPath -CommandName "golangci-lint" -PackagePatterns @(
 Require-Command -CommandName "gcc" -InstallHint "Recommended on Windows: winget install -e --id BrechtSanders.WinLibs.POSIX.UCRT"
 Require-Command -CommandName "golangci-lint" -InstallHint "Recommended on Windows: winget install -e --id GolangCI.golangci-lint"
 
+# Frontend must be built before any Go command because assets.go embeds
+# frontend/dist via //go:embed. Without the dist directory, go list,
+# go test, go vet and go build all fail.
+Push-Location frontend
+try {
+  Write-Host "Installing frontend dependencies..."
+  npm ci
+
+  Write-Host "Building frontend (required for Go embed)..."
+  npm run build
+
+  Write-Host "Running frontend typecheck..."
+  npm run typecheck
+
+  Write-Host "Running frontend tests..."
+  npm test
+
+  Write-Host "Running frontend lint..."
+  npm run lint
+}
+finally {
+  Pop-Location
+}
+
 Write-Host "Checking Go formatting..."
 $gofmtOutput = gofmt -l .
 if ($gofmtOutput) {
@@ -102,24 +126,6 @@ Write-Host "Running go build..."
 
 Write-Host "Running golangci-lint..."
 & golangci-lint run
-
-Push-Location frontend
-try {
-  Write-Host "Installing frontend dependencies..."
-  npm ci
-
-  Write-Host "Running frontend typecheck..."
-  npm run typecheck
-
-  Write-Host "Running frontend tests..."
-  npm test
-
-  Write-Host "Running frontend lint..."
-  npm run lint
-}
-finally {
-  Pop-Location
-}
 
 Write-Host "Running Wails build..."
 wails build
