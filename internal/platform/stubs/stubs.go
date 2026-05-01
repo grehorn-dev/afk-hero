@@ -75,4 +75,3 @@ func (wm *WindowManager) WindowInfo(id uintptr) (domain.WindowInfo, error) {
 func (wm *WindowManager) WindowStatus(id uintptr) (domain.WindowActivationStatus, error) {
 	return domain.WindowActivationStatus{}, apperrors.ErrNotImplemented
 }
-
