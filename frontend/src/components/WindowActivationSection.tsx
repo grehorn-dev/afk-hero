@@ -9,18 +9,20 @@ interface Props {
   enabled: boolean;
   mode: ActivationMode;
   timeout: number;
+  targetWindowOnly: boolean;
   targetClass: string;
   targetProcessName: string;
   activationState: ActivationRuntimeState;
   onEnabledChange: (v: boolean) => void;
   onModeChange: (v: ActivationMode) => void;
   onTimeoutChange: (v: number) => void;
+  onTargetWindowOnlyChange: (v: boolean) => void;
   onTargetChange: (processName: string, windowClass: string, title: string) => void;
 }
 
 export function WindowActivationSection({
-  enabled, mode, timeout,
-  onEnabledChange, onModeChange, onTimeoutChange, onTargetChange,
+  enabled, mode, timeout, targetWindowOnly,
+  onEnabledChange, onModeChange, onTimeoutChange, onTargetWindowOnlyChange, onTargetChange,
   targetClass, targetProcessName, activationState,
 }: Props) {
   const { t } = useTranslation();
@@ -180,6 +182,13 @@ export function WindowActivationSection({
               <span className="suffix-label">{t('unit.seconds')}</span>
             </div>
           </div>
+
+          <ToggleRow
+            label={t('settings.windowActivation.targetWindowOnly')}
+            tooltip={t('tooltip.targetWindowOnly')}
+            value={targetWindowOnly}
+            onChange={onTargetWindowOnlyChange}
+          />
 
           <div className="form-row activation-progress-row" title={t('tooltip.activationTimeout')}>
             <div className="form-label activation-progress-spacer" aria-hidden="true" />

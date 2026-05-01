@@ -26,6 +26,7 @@ export interface Settings {
   activationEnabled: boolean;
   activationMode: ActivationMode;
   activationTimeout: number;
+  activationTargetWindowOnly: boolean;
   targetWindowTitle: string;
   targetWindowClass: string;
   targetProcessName: string;
@@ -43,26 +44,6 @@ export interface Language {
   code: string;
   name: string;
 }
-
-export const DEFAULT_SETTINGS: Settings = {
-  enabled: true,
-  advanced: false,
-  logging: false,
-  language: 'eng',
-  theme: 'Dark',
-  shape: 'Random',
-  direction: 'Random',
-  distance: { mode: 'Random', value: 100, minVal: 100, maxVal: 200 },
-  interval: { mode: 'Random', value: 50, minVal: 50, maxVal: 60 },
-  speed: { mode: 'Random', value: 1, minVal: 1, maxVal: 2 },
-  inactivity: { mode: 'Fixed', value: 239, minVal: 60, maxVal: 120 },
-  activationEnabled: false,
-  activationMode: 'Auto',
-  activationTimeout: 840,
-  targetWindowTitle: '',
-  targetWindowClass: '',
-  targetProcessName: '',
-};
 
 export const SHAPES: Shape[] = ['Random', 'Pentagon', 'Rectangle', 'Triangle', 'Segment', 'OnePixel'];
 export const DIRECTIONS: Direction[] = ['Random', 'Center', 'Up', 'Down', 'Left', 'Right'];

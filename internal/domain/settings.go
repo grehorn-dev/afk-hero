@@ -281,6 +281,7 @@ type Settings struct {
 	TargetWindowTitle              string         `toml:"target_window_title" json:"targetWindowTitle"`
 	TargetWindowClass              string         `toml:"target_window_class" json:"targetWindowClass"`
 	TargetProcessName              string         `toml:"target_process_name" json:"targetProcessName"`
+	ActivationTargetWindowOnly     bool           `toml:"activation_target_window_only" json:"activationTargetWindowOnly"`
 	ActivationTickIntervalMS       int            `toml:"activation_tick_interval_ms" json:"-"`
 	ActivationAutoProcessBlacklist []string       `toml:"blacklist_auto" json:"-"`
 }
@@ -340,6 +341,7 @@ func DefaultSettings() Settings {
 		TargetWindowTitle:              "",
 		TargetWindowClass:              "",
 		TargetProcessName:              "",
+		ActivationTargetWindowOnly:     false,
 		ActivationTickIntervalMS:       DefaultActivationTickIntervalMS(),
 		ActivationAutoProcessBlacklist: DefaultActivationAutoProcessBlacklist(),
 	}

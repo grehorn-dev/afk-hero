@@ -8,6 +8,8 @@ export function ApplySettings(arg1:domain.Settings):Promise<void>;
 
 export function GetActivationState():Promise<domain.WindowActivationState>;
 
+export function GetDefaultSettings():Promise<domain.Settings>;
+
 export function GetSettings():Promise<domain.Settings>;
 
 export function GetState():Promise<domain.RuntimeState>;

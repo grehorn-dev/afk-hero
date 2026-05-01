@@ -10,10 +10,7 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-const (
-	configFile = "config.toml"
-	appVersion = "1.0.0"
-)
+const configFile = "config.toml"
 
 // FileConfig represents the on-disk TOML config structure.
 type FileConfig struct {
@@ -28,10 +25,9 @@ type FileConfig struct {
 }
 
 type ApplicationSection struct {
-	Version  string `toml:"version"`
-	Enabled  bool   `toml:"enabled"`
-	Advanced *bool  `toml:"advanced"`
-	Logging  bool   `toml:"logging"`
+	Enabled  bool  `toml:"enabled"`
+	Advanced *bool `toml:"advanced"`
+	Logging  bool  `toml:"logging"`
 }
 
 type AppearanceSection struct {
@@ -55,6 +51,7 @@ type ActivationSection struct {
 	Enabled              bool     `toml:"enabled"`
 	Mode                 string   `toml:"mode"`
 	Timeout              int      `toml:"timeout"`
+	TargetWindowOnly     bool     `toml:"target_window_only"`
 	TickIntervalMS       int      `toml:"tick_interval_ms"`
 	WindowTitle          string   `toml:"window_title"`
 	WindowClass          string   `toml:"window_class"`
@@ -170,6 +167,7 @@ func fileConfigToSettings(fc FileConfig) domain.Settings {
 		ActivationEnabled:              fc.Activation.Enabled,
 		ActivationMode:                 domain.ActivationMode(fc.Activation.Mode),
 		ActivationTimeout:              fc.Activation.Timeout,
+		ActivationTargetWindowOnly:     fc.Activation.TargetWindowOnly,
 		ActivationTickIntervalMS:       fc.Activation.TickIntervalMS,
 		TargetWindowTitle:              fc.Activation.WindowTitle,
 		TargetWindowClass:              fc.Activation.WindowClass,
@@ -181,7 +179,6 @@ func fileConfigToSettings(fc FileConfig) domain.Settings {
 func settingsToFileConfig(s domain.Settings) FileConfig {
 	return FileConfig{
 		Application: ApplicationSection{
-			Version:  appVersion,
 			Enabled:  s.Enabled,
 			Advanced: boolPtr(s.Advanced),
 			Logging:  s.Logging,
@@ -202,6 +199,7 @@ func settingsToFileConfig(s domain.Settings) FileConfig {
 			Enabled:              s.ActivationEnabled,
 			Mode:                 string(s.ActivationMode),
 			Timeout:              s.ActivationTimeout,
+			TargetWindowOnly:     s.ActivationTargetWindowOnly,
 			TickIntervalMS:       s.ActivationTickIntervalMS,
 			WindowTitle:          s.TargetWindowTitle,
 			WindowClass:          s.TargetWindowClass,

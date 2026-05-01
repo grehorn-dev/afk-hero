@@ -145,7 +145,6 @@ func TestLoad_LegacyWindowSectionIsIgnored(t *testing.T) {
 	configPath := filepath.Join(configDir, configFile)
 	legacy := `
 [application]
-version = "1.0.0"
 enabled = true
 advanced = false
 logging = false
@@ -369,7 +368,6 @@ func TestLoad_DefaultsAdvancedToFalseWhenMissing(t *testing.T) {
 	configPath := filepath.Join(configDir, configFile)
 	legacy := `
 [application]
-version = "1.0.0"
 enabled = true
 logging = false
 

@@ -6,7 +6,7 @@ const (
 	WindowWidth            = 590
 	WindowBaseHeight       = 590
 	WindowAdvancedHeight   = 160
-	WindowActivationHeight = 80
+	WindowActivationHeight = 110
 )
 
 // WindowHeight returns the fixed settings window height for the given settings.

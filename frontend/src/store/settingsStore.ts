@@ -1,32 +1,33 @@
 import { create } from 'zustand';
 import type { Settings, NumericRange } from '../types/settings';
-import { DEFAULT_SETTINGS } from '../types/settings';
 
 interface SettingsStore {
-  // Draft form state
+  ready: boolean;
   draft: Settings;
-  // Applied state (last known from backend)
   applied: Settings;
-  // Dirty tracking
+  defaults: Settings;
   isDirty: boolean;
 
-  // Actions
   setDraft: (update: Partial<Settings>) => void;
   setDraftRange: (field: keyof Pick<Settings, 'distance' | 'interval' | 'speed' | 'inactivity'>, update: Partial<NumericRange>) => void;
-  initFromApplied: (settings: Settings) => void;
+  initFromApplied: (settings: Settings, defaults?: Settings) => void;
   setApplied: (settings: Settings) => void;
   markClean: () => void;
   resetToDefaults: () => void;
   cancelChanges: () => void;
 }
 
+const PLACEHOLDER: Settings = {} as Settings;
+
 function settingsEqual(a: Settings, b: Settings): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
-  draft: { ...DEFAULT_SETTINGS },
-  applied: { ...DEFAULT_SETTINGS },
+  ready: false,
+  draft: PLACEHOLDER,
+  applied: PLACEHOLDER,
+  defaults: PLACEHOLDER,
   isDirty: false,
 
   setDraft: (update) => {
@@ -45,8 +46,17 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     });
   },
 
-  initFromApplied: (settings) => {
-    set({ draft: { ...settings }, applied: { ...settings }, isDirty: false });
+  initFromApplied: (settings, defaults) => {
+    const update: Partial<SettingsStore> = {
+      ready: true,
+      draft: { ...settings },
+      applied: { ...settings },
+      isDirty: false,
+    };
+    if (defaults) {
+      update.defaults = { ...defaults };
+    }
+    set(update);
   },
 
   setApplied: (settings) => {
@@ -62,12 +72,12 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
 
   resetToDefaults: () => {
     set((s) => {
-      const defaults = {
-        ...DEFAULT_SETTINGS,
+      const reset = {
+        ...s.defaults,
         language: s.draft.language,
         theme: s.draft.theme,
       };
-      return { draft: defaults, isDirty: !settingsEqual(defaults, s.applied) };
+      return { draft: reset, isDirty: !settingsEqual(reset, s.applied) };
     });
   },
 

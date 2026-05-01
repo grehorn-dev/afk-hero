@@ -70,6 +70,14 @@ func (e *Engine) runAnimation(ctx context.Context, cycleID uint64, settings doma
 		return
 	}
 
+	if e.shouldSkipAnimation(settings) {
+		logging.Get().Debug("animation skipped: target window is not foreground")
+		if e.send(domain.EventUserInput) {
+			e.store.SetProgress(0, "status.WaitingForInactivity")
+		}
+		return
+	}
+
 	bounds, err := e.screen.WorkArea(origin)
 	if err != nil {
 		logging.Get().Error("get work area failed", "error", err)
@@ -200,6 +208,35 @@ func (e *Engine) runAnimation(ctx context.Context, cycleID uint64, settings doma
 		interval := e.pickValue(settings.Interval)
 		clearCycle = false
 		go e.waitInterval(ctx, cycleID, time.Duration(interval)*time.Second, settings)
+	}
+}
+
+func (e *Engine) shouldSkipAnimation(settings domain.Settings) bool {
+	if !settings.ActivationEnabled || !settings.ActivationTargetWindowOnly || e.windowMgr == nil {
+		return false
+	}
+
+	target, ok := e.activationTarget(settings)
+	if !ok {
+		return true
+	}
+
+	status, err := e.windowMgr.WindowStatus(target.ID)
+	if err != nil || !status.Exists {
+		return true
+	}
+
+	return status.Minimized || !status.Foreground
+}
+
+func (e *Engine) activationTarget(settings domain.Settings) (domain.WindowInfo, bool) {
+	switch settings.ActivationMode {
+	case domain.ActivationModeAuto:
+		return e.autoActivationCache()
+	case domain.ActivationModeManual:
+		return e.manualActivationCache(settings.ActivationFingerprint())
+	default:
+		return domain.WindowInfo{}, false
 	}
 }
 

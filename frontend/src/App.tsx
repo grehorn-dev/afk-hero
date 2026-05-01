@@ -13,6 +13,7 @@ declare global {
     go: {
       app: {
         App: {
+          GetDefaultSettings(): Promise<Settings>;
           GetSettings(): Promise<Settings>;
           ApplySettings(s: Settings): Promise<void>;
           SetEnabled(enabled: boolean): Promise<void>;
@@ -42,9 +43,11 @@ function App() {
   useEffect(() => {
     async function init() {
       try {
-        // Load settings from backend
-        const settings = await window.go.app.App.GetSettings();
-        initFromApplied(settings);
+        const [settings, defaults] = await Promise.all([
+          window.go.app.App.GetSettings(),
+          window.go.app.App.GetDefaultSettings(),
+        ]);
+        initFromApplied(settings, defaults);
 
         // Load translations
         const translations = await window.go.app.App.GetTranslations(settings.language);
@@ -101,6 +104,10 @@ function App() {
       unsubSettings?.();
     };
   }, [initFromApplied, setActivationState, setApplied, setRuntimeState]);
+
+  const ready = useSettingsStore((s) => s.ready);
+
+  if (!ready) return null;
 
   return <SettingsForm />;
 }

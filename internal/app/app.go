@@ -202,6 +202,11 @@ func (a *App) BeforeClose(ctx context.Context) bool {
 
 // --- Wails Bindings ---
 
+// GetDefaultSettings returns the canonical default settings.
+func (a *App) GetDefaultSettings() domain.Settings {
+	return domain.DefaultSettings()
+}
+
 // GetSettings returns the current applied settings.
 func (a *App) GetSettings() domain.Settings {
 	if a.store == nil {

@@ -10,6 +10,10 @@ export function GetActivationState() {
   return window['go']['app']['App']['GetActivationState']();
 }
 
+export function GetDefaultSettings() {
+  return window['go']['app']['App']['GetDefaultSettings']();
+}
+
 export function GetSettings() {
   return window['go']['app']['App']['GetSettings']();
 }

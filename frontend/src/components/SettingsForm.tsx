@@ -143,12 +143,14 @@ export function SettingsForm() {
           enabled={draft.activationEnabled}
           mode={draft.activationMode}
           timeout={draft.activationTimeout}
+          targetWindowOnly={draft.activationTargetWindowOnly}
           targetClass={draft.targetWindowClass}
           targetProcessName={draft.targetProcessName}
           activationState={activationState}
           onEnabledChange={(v) => setDraft({ activationEnabled: v })}
           onModeChange={(v) => setDraft({ activationMode: v })}
           onTimeoutChange={(v) => setDraft({ activationTimeout: v })}
+          onTargetWindowOnlyChange={(v) => setDraft({ activationTargetWindowOnly: v })}
           onTargetChange={(processName, windowClass, title) => setDraft({
             targetProcessName: processName,
             targetWindowClass: windowClass,

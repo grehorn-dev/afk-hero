@@ -1,12 +1,34 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { DEFAULT_SETTINGS } from '../types/settings';
+import type { Settings } from '../types/settings';
 import { useSettingsStore } from './settingsStore';
+
+const TEST_DEFAULTS: Settings = {
+  enabled: true,
+  advanced: false,
+  logging: false,
+  language: 'eng',
+  theme: 'Dark',
+  shape: 'Random',
+  direction: 'Random',
+  distance: { mode: 'Random', value: 150, minVal: 150, maxVal: 300 },
+  interval: { mode: 'Random', value: 25, minVal: 25, maxVal: 35 },
+  speed: { mode: 'Random', value: 1, minVal: 1, maxVal: 2 },
+  inactivity: { mode: 'Fixed', value: 60, minVal: 60, maxVal: 120 },
+  activationEnabled: false,
+  activationMode: 'Auto',
+  activationTimeout: 239,
+  activationTargetWindowOnly: false,
+  targetWindowTitle: '',
+  targetWindowClass: '',
+  targetProcessName: '',
+};
 
 describe('settingsStore', () => {
   beforeEach(() => {
     useSettingsStore.setState({
-      draft: { ...DEFAULT_SETTINGS },
-      applied: { ...DEFAULT_SETTINGS },
+      draft: { ...TEST_DEFAULTS },
+      applied: { ...TEST_DEFAULTS },
+      defaults: { ...TEST_DEFAULTS },
       isDirty: false,
     });
   });
@@ -41,8 +63,8 @@ describe('settingsStore', () => {
     store.resetToDefaults();
 
     const state = useSettingsStore.getState();
-    expect(state.draft).toEqual({ ...DEFAULT_SETTINGS, language: 'rus', theme: 'Light' });
-    expect(state.applied).toEqual(DEFAULT_SETTINGS);
+    expect(state.draft).toEqual({ ...TEST_DEFAULTS, language: 'rus', theme: 'Light' });
+    expect(state.applied).toEqual(TEST_DEFAULTS);
     expect(state.isDirty).toBe(true);
   });
 

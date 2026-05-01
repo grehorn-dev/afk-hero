@@ -54,6 +54,7 @@ export namespace domain {
 	    targetWindowTitle: string;
 	    targetWindowClass: string;
 	    targetProcessName: string;
+	    activationTargetWindowOnly: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Settings(source);
@@ -78,6 +79,7 @@ export namespace domain {
 	        this.targetWindowTitle = source["targetWindowTitle"];
 	        this.targetWindowClass = source["targetWindowClass"];
 	        this.targetProcessName = source["targetProcessName"];
+	        this.activationTargetWindowOnly = source["activationTargetWindowOnly"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
