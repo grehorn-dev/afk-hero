@@ -318,8 +318,8 @@ func DefaultSettings() Settings {
 		Autostart: true,
 		Advanced:  false,
 		Logging:   false,
-		Language: "eng",
-		Theme:    ThemeDark,
+		Language:  "eng",
+		Theme:     ThemeDark,
 
 		Shape:     ShapeRandom,
 		Direction: DirectionRandom,

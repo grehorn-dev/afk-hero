@@ -155,8 +155,8 @@ func fileConfigToSettings(fc FileConfig) domain.Settings {
 		Autostart: fc.Application.Autostart,
 		Advanced:  advanced,
 		Logging:   fc.Application.Logging,
-		Language: fc.Appearance.Language,
-		Theme:    domain.Theme(fc.Appearance.Theme),
+		Language:  fc.Appearance.Language,
+		Theme:     domain.Theme(fc.Appearance.Theme),
 
 		Shape:     domain.Shape(fc.Pattern.Shape),
 		Direction: domain.Direction(fc.Pattern.Direction),
