@@ -4,6 +4,7 @@ import { useSettingsStore } from './settingsStore';
 
 const TEST_DEFAULTS: Settings = {
   enabled: true,
+  autostart: true,
   advanced: false,
   logging: false,
   language: 'eng',

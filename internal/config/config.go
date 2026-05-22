@@ -25,9 +25,10 @@ type FileConfig struct {
 }
 
 type ApplicationSection struct {
-	Enabled  bool  `toml:"enabled"`
-	Advanced *bool `toml:"advanced"`
-	Logging  bool  `toml:"logging"`
+	Enabled   bool  `toml:"enabled"`
+	Autostart bool  `toml:"autostart"`
+	Advanced  *bool `toml:"advanced"`
+	Logging   bool  `toml:"logging"`
 }
 
 type AppearanceSection struct {
@@ -150,9 +151,10 @@ func fileConfigToSettings(fc FileConfig) domain.Settings {
 	}
 
 	return domain.Settings{
-		Enabled:  fc.Application.Enabled,
-		Advanced: advanced,
-		Logging:  fc.Application.Logging,
+		Enabled:   fc.Application.Enabled,
+		Autostart: fc.Application.Autostart,
+		Advanced:  advanced,
+		Logging:   fc.Application.Logging,
 		Language: fc.Appearance.Language,
 		Theme:    domain.Theme(fc.Appearance.Theme),
 
@@ -179,9 +181,10 @@ func fileConfigToSettings(fc FileConfig) domain.Settings {
 func settingsToFileConfig(s domain.Settings) FileConfig {
 	return FileConfig{
 		Application: ApplicationSection{
-			Enabled:  s.Enabled,
-			Advanced: boolPtr(s.Advanced),
-			Logging:  s.Logging,
+			Enabled:   s.Enabled,
+			Autostart: s.Autostart,
+			Advanced:  boolPtr(s.Advanced),
+			Logging:   s.Logging,
 		},
 		Appearance: AppearanceSection{
 			Language: s.Language,

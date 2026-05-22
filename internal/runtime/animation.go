@@ -33,6 +33,10 @@ func (e *Engine) handleWaitingForInactivity(ctx context.Context, currentState do
 		return
 	}
 
+	if e.shouldSkipAnimation(settings) {
+		return
+	}
+
 	e.resetInactivityThreshold()
 	if !e.send(domain.EventInactivityReached) {
 		return
@@ -66,14 +70,6 @@ func (e *Engine) runAnimation(ctx context.Context, cycleID uint64, settings doma
 		logging.Get().Error("get cursor position failed", "error", err)
 		if e.send(domain.EventError) {
 			e.store.SetProgress(0, "status.Error")
-		}
-		return
-	}
-
-	if e.shouldSkipAnimation(settings) {
-		logging.Get().Debug("animation skipped: target window is not foreground")
-		if e.send(domain.EventUserInput) {
-			e.store.SetProgress(0, "status.WaitingForInactivity")
 		}
 		return
 	}

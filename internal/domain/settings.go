@@ -256,9 +256,10 @@ func NormalizeProcessName(name string) string {
 // Settings holds all user-configurable application settings.
 type Settings struct {
 	// Application
-	Enabled  bool `toml:"enabled" json:"enabled"`
-	Advanced bool `toml:"advanced" json:"advanced"`
-	Logging  bool `toml:"logging" json:"logging"`
+	Enabled   bool `toml:"enabled" json:"enabled"`
+	Autostart bool `toml:"autostart" json:"autostart"`
+	Advanced  bool `toml:"advanced" json:"advanced"`
+	Logging   bool `toml:"logging" json:"logging"`
 
 	// Appearance
 	Language string `toml:"language" json:"language"`
@@ -313,9 +314,10 @@ func (s Settings) Effective() Settings {
 // DefaultSettings returns the default application settings.
 func DefaultSettings() Settings {
 	return Settings{
-		Enabled:  true,
-		Advanced: false,
-		Logging:  false,
+		Enabled:   true,
+		Autostart: true,
+		Advanced:  false,
+		Logging:   false,
 		Language: "eng",
 		Theme:    ThemeDark,
 

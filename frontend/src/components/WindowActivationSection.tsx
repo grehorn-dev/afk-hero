@@ -12,6 +12,7 @@ interface Props {
   targetWindowOnly: boolean;
   targetClass: string;
   targetProcessName: string;
+  targetWindowTitle: string;
   activationState: ActivationRuntimeState;
   onEnabledChange: (v: boolean) => void;
   onModeChange: (v: ActivationMode) => void;
@@ -23,7 +24,7 @@ interface Props {
 export function WindowActivationSection({
   enabled, mode, timeout, targetWindowOnly,
   onEnabledChange, onModeChange, onTimeoutChange, onTargetWindowOnlyChange, onTargetChange,
-  targetClass, targetProcessName, activationState,
+  targetClass, targetProcessName, targetWindowTitle, activationState,
 }: Props) {
   const { t } = useTranslation();
   const [windows, setWindows] = useState<WindowInfo[]>([]);
@@ -78,6 +79,8 @@ export function WindowActivationSection({
   const selectedValue = mode === 'Auto' || !targetProcessName || !targetClass ?
     'auto' :
     `${targetProcessName}\u0000${targetClass}`;
+  const manualTargetInList = selectedValue !== 'auto' &&
+    windows.some((w) => windowValue(w) === selectedValue);
   const activationProgress = Math.max(0, Math.min(1, activationState.progress));
   const autoLabel = (() => {
     if (activationState.targetFound && activationState.processName) {
@@ -135,6 +138,11 @@ export function WindowActivationSection({
                 }}
               >
                 <option value="auto">{autoLabel}</option>
+                {!manualTargetInList && selectedValue !== 'auto' && (
+                  <option value={selectedValue}>
+                    {`${targetProcessName} - ${targetWindowTitle.trim() || targetClass || targetProcessName}`}
+                  </option>
+                )}
                 {windows.map((w) => (
                   <option key={`${w.id}-${w.processName}-${w.className}`} value={windowValue(w)}>
                     {formatWindowLabel(w)}

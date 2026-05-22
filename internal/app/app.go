@@ -54,6 +54,7 @@ type App struct {
 	pointer         platform.PointerController
 	screen          platform.ScreenProvider
 	windowMgr       platform.WindowManager
+	autostart       platform.AutostartManager
 
 	// Tray update callback
 	onTrayUpdate func(settings domain.Settings, state domain.State)
@@ -82,12 +83,14 @@ func NewApp(
 	pointer platform.PointerController,
 	screen platform.ScreenProvider,
 	windowMgr platform.WindowManager,
+	autostart platform.AutostartManager,
 ) *App {
 	return &App{
 		activityMonitor: activity,
 		pointer:         pointer,
 		screen:          screen,
 		windowMgr:       windowMgr,
+		autostart:       autostart,
 		hideWindow:      wailsruntime.WindowHide,
 		emit:            wailsruntime.EventsEmit,
 		newEngine: func(
@@ -125,6 +128,13 @@ func (a *App) Startup(ctx context.Context) {
 
 	if err != nil {
 		log.Warn("config load issue, using defaults", "error", err)
+	}
+
+	// Sync autostart registry entry with persisted config
+	if a.autostart != nil {
+		if err := a.autostart.SetAutostart(settings.Autostart); err != nil {
+			log.Warn("autostart sync failed", "error", err)
+		}
 	}
 
 	// Preload English translations as fallback
@@ -252,6 +262,13 @@ func (a *App) ApplySettings(settings domain.Settings) error {
 	if err := config.Save(settings); err != nil {
 		log.Error("config save failed", "error", err)
 		return err
+	}
+
+	// Sync autostart
+	if a.autostart != nil {
+		if err := a.autostart.SetAutostart(settings.Autostart); err != nil {
+			log.Error("autostart change failed", "error", err)
+		}
 	}
 
 	// Notify frontend

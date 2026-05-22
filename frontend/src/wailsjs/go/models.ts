@@ -38,6 +38,7 @@ export namespace domain {
 	}
 	export class Settings {
 	    enabled: boolean;
+	    autostart: boolean;
 	    advanced: boolean;
 	    logging: boolean;
 	    language: string;
@@ -63,6 +64,7 @@ export namespace domain {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.enabled = source["enabled"];
+	        this.autostart = source["autostart"];
 	        this.advanced = source["advanced"];
 	        this.logging = source["logging"];
 	        this.language = source["language"];

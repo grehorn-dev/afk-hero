@@ -20,6 +20,18 @@ type fakeEngine struct {
 	activationState domain.WindowActivationState
 }
 
+type fakeAutostartManager struct {
+	lastEnabled bool
+	setCalls    int
+	setErr      error
+}
+
+func (f *fakeAutostartManager) SetAutostart(enabled bool) error {
+	f.lastEnabled = enabled
+	f.setCalls++
+	return f.setErr
+}
+
 type fakeWindowManager struct {
 	windows           []domain.WindowInfo
 	listErr           error
@@ -318,6 +330,7 @@ func TestStartupWiresDependenciesInCorrectOrder(t *testing.T) {
 		stubPointerController{},
 		stubScreenProvider{},
 		&fakeWindowManager{},
+		&fakeAutostartManager{},
 	)
 	app.hideWindow = func(context.Context) {}
 	app.emit = func(_ context.Context, name string, _ ...interface{}) {
@@ -395,6 +408,7 @@ func TestStartupInitializesLoggingBeforeFirstGet(t *testing.T) {
 		stubPointerController{},
 		stubScreenProvider{},
 		&fakeWindowManager{},
+		&fakeAutostartManager{},
 	)
 	app.hideWindow = func(context.Context) {}
 	app.emit = func(context.Context, string, ...interface{}) {}
@@ -440,6 +454,7 @@ func TestStartupSkipsEnableWhenPersistedAsDisabled(t *testing.T) {
 		stubPointerController{},
 		stubScreenProvider{},
 		&fakeWindowManager{},
+		&fakeAutostartManager{},
 	)
 	app.hideWindow = func(context.Context) {}
 	app.emit = func(context.Context, string, ...interface{}) {}

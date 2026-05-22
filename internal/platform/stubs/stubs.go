@@ -43,6 +43,15 @@ func (sp *ScreenProvider) PrimaryWorkArea() (domain.Rect, error) {
 	return domain.Rect{}, apperrors.ErrNotImplemented
 }
 
+// AutostartManager is a stub for non-Windows platforms.
+type AutostartManager struct{}
+
+func NewAutostartManager() *AutostartManager { return &AutostartManager{} }
+
+func (m *AutostartManager) SetAutostart(enabled bool) error {
+	return apperrors.ErrNotImplemented
+}
+
 // WindowManager is a stub for non-Windows platforms.
 type WindowManager struct{}
 

@@ -235,6 +235,13 @@
   background: var(--progress-fill);
 }
 
+/* Divider */
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
 /* Status Bar */
 .status-bar {
   margin-top: 12px;

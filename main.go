@@ -30,7 +30,7 @@ func main() {
 	windowHeight := appmeta.WindowHeight(startupSettings)
 
 	services := bootstrap.NewServices()
-	application := app.NewApp(services.Activity, services.Pointer, services.Screen, services.WindowManager)
+	application := app.NewApp(services.Activity, services.Pointer, services.Screen, services.WindowManager, services.Autostart)
 
 	trayMgr := tray.NewManager(tray.Callbacks{
 		OnShowSettings: application.ShowWindow,

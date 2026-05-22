@@ -4,7 +4,7 @@ import "afk-hero/internal/domain"
 
 const (
 	WindowWidth            = 590
-	WindowBaseHeight       = 590
+	WindowBaseHeight       = 640
 	WindowAdvancedHeight   = 160
 	WindowActivationHeight = 110
 )

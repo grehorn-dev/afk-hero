@@ -15,6 +15,7 @@ type Services struct {
 	Pointer       platform.PointerController
 	Screen        platform.ScreenProvider
 	WindowManager platform.WindowManager
+	Autostart     platform.AutostartManager
 }
 
 // NewServices builds the platform-specific service bundle for non-Windows stubs.
@@ -24,6 +25,7 @@ func NewServices() Services {
 		Pointer:       stubs.NewPointerController(),
 		Screen:        stubs.NewScreenProvider(),
 		WindowManager: stubs.NewWindowManager(),
+		Autostart:     stubs.NewAutostartManager(),
 	}
 }
 

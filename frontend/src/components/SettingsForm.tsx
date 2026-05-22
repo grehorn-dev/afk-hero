@@ -89,6 +89,15 @@ export function SettingsForm() {
         />
 
         <ToggleRow
+          label={t('settings.autostart')}
+          tooltip={t('tooltip.autostart')}
+          value={draft.autostart}
+          onChange={(autostart) => setDraft({ autostart })}
+        />
+
+        <hr className="form-divider" />
+
+        <ToggleRow
           label={t('settings.enabled')}
           tooltip={t('tooltip.enabled')}
           value={draft.enabled}
@@ -146,6 +155,7 @@ export function SettingsForm() {
           targetWindowOnly={draft.activationTargetWindowOnly}
           targetClass={draft.targetWindowClass}
           targetProcessName={draft.targetProcessName}
+          targetWindowTitle={draft.targetWindowTitle}
           activationState={activationState}
           onEnabledChange={(v) => setDraft({ activationEnabled: v })}
           onModeChange={(v) => setDraft({ activationMode: v })}

@@ -30,6 +30,12 @@ type ScreenProvider interface {
 	PrimaryWorkArea() (domain.Rect, error)
 }
 
+// AutostartManager manages application autostart on login.
+type AutostartManager interface {
+	// SetAutostart enables or disables autostart with the system.
+	SetAutostart(enabled bool) error
+}
+
 // WindowManager lists and activates windows.
 type WindowManager interface {
 	// ListWindows returns visible top-level windows.

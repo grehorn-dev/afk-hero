@@ -13,6 +13,7 @@ export interface NumericRange {
 
 export interface Settings {
   enabled: boolean;
+  autostart: boolean;
   advanced: boolean;
   logging: boolean;
   language: string;

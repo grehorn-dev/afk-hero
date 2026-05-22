@@ -20,6 +20,7 @@ keeps your session alive and optionally brings a target/game window to the foreg
 - Translation into dozens of languages, including right-to-left support
 - Dark / Light themes support
 - System tray icon with localized context menu
+- Automatically start the application when you log in to Windows
 - Config persisted in `%APPDATA%/afk-hero/`
 - Single-instance enforcement
 
